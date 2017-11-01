@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.MainController">
+    <children>
+        <AnchorPane prefHeight="400.0" prefWidth="600.0" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
+                    AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="40">
+            <children>
+                <TableView fx:id="tblWaybills" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0"
+                           AnchorPane.leftAnchor="0"
+                           AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+                    <columns>
+                        <TableColumn fx:id="clmnNumber" prefWidth="100.0" text="Номер накладной"/>
+                        <TableColumn fx:id="clmnProducer" prefWidth="100.0" text="Производитель"/>
+                    </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                    </columnResizePolicy>
+                </TableView>
+            </children>
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
+        </AnchorPane>
+        <ButtonBar prefHeight="40.0" prefWidth="200.0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0"
+                   AnchorPane.leftAnchor="0">
+            <buttons>
+                <Button fx:id="btnAdd" mnemonicParsing="false" text="Добавить" onMouseClicked="#editWaybillForm"/>
+                <Button fx:id="btnEdit" mnemonicParsing="false" text="Редактировать" onMouseClicked="#editWaybillForm"/>
+                <Button fx:id="btnDelete" mnemonicParsing="false" text="Удалить" onMouseClicked="#deleteWaybill"/>
+            </buttons>
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </padding>
+        </ButtonBar>
+    </children>
+</AnchorPane>

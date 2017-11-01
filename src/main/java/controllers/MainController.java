@@ -35,7 +35,6 @@ public class MainController implements Initializable {
     @FXML
     private TableColumn<Waybill, Producer> clmnProducer;
 
-    private ObservableList<Waybill> backupList;
     private Stage mainStage;
     private Parent fxmlEdit;
     private Stage editStage;
@@ -74,8 +73,6 @@ public class MainController implements Initializable {
 
     private void fillData() {
         collectionAccountingBook.fillWaybillList();
-        backupList = FXCollections.observableArrayList();
-        backupList.addAll(collectionAccountingBook.getWaybillObservableList());
         tblWaybills.setItems(collectionAccountingBook.getWaybillObservableList());
     }
 

@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import models.Producer;
 import models.Waybill;
 import models.WaybillGood;
 
@@ -67,11 +68,11 @@ public class EditController implements Initializable {
     @FXML
     private Button btnDelete;
 
-    private ObservableList<WaybillGood> backupList;
     private Stage mainStage;
     private ResourceBundle resourceBundle;
     private Waybill waybill;
     private WaybillGood waybillGood;
+    private ObservableList<WaybillGood> backupList;
 
     public void setMainStage(Stage mainStage) {
         this.mainStage = mainStage;
@@ -103,7 +104,14 @@ public class EditController implements Initializable {
     }
 
     private void updateSumLabel() {
-        lblWaybillsSum.setText(String.valueOf(waybill.getSum()));
+        lblWaybillsSum.setText(String.valueOf(getSum()));
+    }
+
+    public double getSum() {
+        double sum = 0;
+        for (WaybillGood good : backupList)
+            sum += good.getTotal();
+        return sum;
     }
 
     public Waybill getWaybill() {
@@ -113,7 +121,7 @@ public class EditController implements Initializable {
     private void fillWaybillGoods() {
         backupList = FXCollections.observableArrayList();
         backupList.addAll(waybill.getWaybillGoods());
-        tblWaybillGoods.setItems(waybill.getWaybillGoods());
+        tblWaybillGoods.setItems(backupList);
         updateSumLabel();
     }
 
@@ -134,7 +142,7 @@ public class EditController implements Initializable {
     }
 
     public void addGood(MouseEvent mouseEvent) {
-        waybill.getWaybillGoods().add(new WaybillGood(txtTitle.getText(),
+        backupList.add(new WaybillGood(txtTitle.getText(),
                 Double.parseDouble(txtPrice.getText()),
                 Double.parseDouble(txtAmount.getText())));
     }
@@ -143,6 +151,13 @@ public class EditController implements Initializable {
     }
 
     public void submitWaybill(MouseEvent mouseEvent) {
+        waybill.setNumber(Integer.parseInt(txtNumber.getText()));
+
+        waybill.getProducer().setName(txtName.getText());
+        waybill.getProducer().setPhone(txtPhone.getText());
+        waybill.getProducer().setAddress(txtAddress.getText());
+
+        waybill.setWaybillGoods(backupList);
     }
 
     public void cancelWaybill(MouseEvent mouseEvent) {
