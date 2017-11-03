@@ -88,16 +88,19 @@ public class MainController implements Initializable {
             case "btnAdd":
                 editController.setWaybill(new Waybill());
                 showDialog();
-                collectionAccountingBook.add(editController.getWaybill());
+                if (editController.getSaveChanges())
+                    collectionAccountingBook.add(editController.getWaybill());
                 break;
             case "btnEdit":
                 if (isWaybillSelected((Waybill) tblWaybills.getSelectionModel().getSelectedItem())) {
                     editController.setWaybill((Waybill) tblWaybills.getSelectionModel().getSelectedItem());
                     showDialog();
-                    collectionAccountingBook.edit(editController.getWaybill());
+                    if (editController.getSaveChanges())
+                        collectionAccountingBook.edit(editController.getWaybill());
                 }
                 break;
         }
+        fillData();
     }
 
     private void showDialog() {

@@ -1,14 +1,16 @@
 package controllers;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import models.Producer;
 import models.Waybill;
 import models.WaybillGood;
 
@@ -73,6 +75,7 @@ public class EditController implements Initializable {
     private Waybill waybill;
     private WaybillGood waybillGood;
     private ObservableList<WaybillGood> backupList;
+    private boolean saveChanges;
 
     public void setMainStage(Stage mainStage) {
         this.mainStage = mainStage;
@@ -90,11 +93,14 @@ public class EditController implements Initializable {
     }
 
     public void setWaybill(Waybill waybill) {
+        saveChanges = false;
+
         if (waybill == null)
             return;
         this.waybill = waybill;
 
         txtNumber.setText(String.valueOf(waybill.getNumber()));
+        txtNumber.setEditable(waybill.getNumber() == 0);
 
         txtName.setText(waybill.getProducer().getName());
         txtPhone.setText(waybill.getProducer().getPhone());
@@ -118,11 +124,15 @@ public class EditController implements Initializable {
         return waybill;
     }
 
+    public boolean getSaveChanges() {
+        return saveChanges;
+    }
+
     private void fillWaybillGoods() {
         backupList = FXCollections.observableArrayList();
+        backupList.addListener((ListChangeListener<WaybillGood>) c -> updateSumLabel());
         backupList.addAll(waybill.getWaybillGoods());
         tblWaybillGoods.setItems(backupList);
-        updateSumLabel();
     }
 
     public void setGood(MouseEvent mouseEvent) {
@@ -148,18 +158,25 @@ public class EditController implements Initializable {
     }
 
     public void deleteGood(MouseEvent mouseEvent) {
+        backupList.remove(tblWaybillGoods.getSelectionModel().getSelectedItem());
     }
 
-    public void submitWaybill(MouseEvent mouseEvent) {
-        waybill.setNumber(Integer.parseInt(txtNumber.getText()));
+    public void submitWaybill(ActionEvent actionEvent) {
+        waybill.setNumber(Integer.valueOf(txtNumber.getText()));
 
         waybill.getProducer().setName(txtName.getText());
         waybill.getProducer().setPhone(txtPhone.getText());
         waybill.getProducer().setAddress(txtAddress.getText());
 
         waybill.setWaybillGoods(backupList);
+
+        saveChanges = true;
+        actionClose(actionEvent);
     }
 
-    public void cancelWaybill(MouseEvent mouseEvent) {
+    public void actionClose(ActionEvent actionEvent) {
+        Node node = (Node) actionEvent.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.hide();
     }
 }

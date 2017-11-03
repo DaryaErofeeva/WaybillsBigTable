@@ -7,10 +7,11 @@ import javafx.collections.ObservableList;
 import models.Waybill;
 
 public class CollectionAccountingBook implements AccountingBook {
-    private WaybillsDAO waybillsDAO = new WaybillsDAO();
+    private WaybillsDAO waybillsDAO;
     private ObservableList<Waybill> waybillObservableList;
 
     public CollectionAccountingBook() {
+        waybillsDAO = new WaybillsDAO();
         waybillObservableList = FXCollections.observableArrayList();
     }
 
@@ -22,6 +23,7 @@ public class CollectionAccountingBook implements AccountingBook {
 
     @Override
     public void edit(Waybill waybill) {
+        waybillsDAO.deleteRow(String.valueOf(waybill.getNumber()));
         waybillsDAO.set(waybill);
     }
 
@@ -36,6 +38,7 @@ public class CollectionAccountingBook implements AccountingBook {
     }
 
     public void fillWaybillList() {
+        waybillObservableList.clear();
         waybillObservableList.addAll(waybillsDAO.readAll());
     }
 }

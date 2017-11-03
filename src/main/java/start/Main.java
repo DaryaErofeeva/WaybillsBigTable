@@ -1,11 +1,18 @@
 package start;
 
 import controllers.MainController;
+import db.WaybillsDAO;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import models.Producer;
+import models.Waybill;
+import models.WaybillGood;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main extends Application {
 
@@ -26,5 +33,11 @@ public class Main extends Application {
         stage.setMinWidth(350);
         stage.setScene(new Scene(fxmlMain));
         stage.show();
+
+//        WaybillsDAO waybillsDAO = new WaybillsDAO();
+//        Waybill waybill = waybillsDAO.read("1");
+//        waybill.getProducer().setName("Производитель");
+//        waybill.setNumber(2);
+//        waybillsDAO.set(waybill);
     }
 }

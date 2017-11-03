@@ -86,10 +86,8 @@ public class WaybillsDAO extends AbstractDAO {
     @Override
     public void deleteRow(String rowName) {
         try (Connection connection = BigtableHelper.getConnection()) {
-            connection
-                    .getAdmin()
-                    .deleteColumn(TableName.valueOf(TABLE_NAME),
-                            Bytes.toBytes(rowName));
+            Delete delete = new Delete(Bytes.toBytes(rowName));
+            connection.getTable(TableName.valueOf(TABLE_NAME)).delete(delete);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -101,9 +99,8 @@ public class WaybillsDAO extends AbstractDAO {
             Table table = connection.getTable(TableName.valueOf(TABLE_NAME));
             Scan scan = new Scan();
             ResultScanner scanner = table.getScanner(scan);
-            for (Result row : scanner) {
+            for (Result row : scanner)
                 waybills.add(getWaybill(row));
-            }
         } catch (IOException ex) {
             ex.printStackTrace();
         }

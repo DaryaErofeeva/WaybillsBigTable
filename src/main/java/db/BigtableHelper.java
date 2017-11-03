@@ -11,18 +11,20 @@ import org.apache.log4j.varia.NullAppender;
 import java.io.IOException;
 
 public class BigtableHelper {
+    private static Configuration config;
     private static Connection connection;
 
     private static void connect() throws IOException {
         GoogleCredential credential = GoogleCredential.getApplicationDefault();
         BasicConfigurator.configure(new NullAppender());
 
-        Configuration config = HBaseConfiguration.create();
+        config = HBaseConfiguration.create();
         connection = ConnectionFactory.createConnection(config);
     }
 
     public static Connection getConnection() throws IOException {
         if (connection == null) connect();
+        if (connection.isClosed()) connection = ConnectionFactory.createConnection(config);
         return connection;
     }
 }
